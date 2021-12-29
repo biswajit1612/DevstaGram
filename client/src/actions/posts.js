@@ -8,7 +8,7 @@ import * as api from '../api';  //it will import everything from api
 export const getPosts = () => async(dispatch) => {
     try {
         //when we fetch we get a response object which contains data we have destructured it
-        const { data } = await api.fetchPosts();  //we are fetching te post 
+        const { data } = await api.fetchPosts();  //we are fetching the posts 
         dispatch({ type: FETCH_ALL, payload: data });  //this will now trigger our reducer
     } catch (error) {
         console.log(error);
@@ -52,3 +52,8 @@ export const likePost = (id) => async(dispatch) => {
         console.log(error);
     }
 }
+
+
+//when we dispatch an action it returns a state and here we are combining multiple reducers so it can be accessed by key-value pair name for ex state.posts over here ...then that combined reducer is used to create a store which is responsible to manage the state and is provided to the entire app application which can be used anywhere in the application by using useSelector hook
+// A store holds the whole state tree of your application. The only way to change the state inside it is to dispatch an action on it.
+// dispatch - Its return value will be considered the next state.

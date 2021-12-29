@@ -8,7 +8,7 @@ const Posts = ({ setCurrentId }) => {
     const posts = useSelector((state) => state.posts); //we get access to the whole redux store that is the state which helps us to read and access them...from there we access posts
     const classes = useStyles();
 
-    console.log(posts);
+    //console.log(posts);
     //if there is no post that is length is 0 then loading symbol or else posts
     return ( 
         !posts.length ? <CircularProgress /> : (

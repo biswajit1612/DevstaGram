@@ -1,9 +1,10 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';  //now express has inbuilt parser
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/users.js';
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,7 @@ mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology:
 
 // mongoose.set('useFindAndModify', false);
 app.use('/posts', postRoutes);
+app.use('/user', userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server runing on Port ${PORT}`);
