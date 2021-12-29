@@ -1,8 +1,8 @@
 import axios from 'axios';
-const API = axios.create({ baseURL: 'http://localhost:5000' }); //creating an axios instance with baseurl
+const API = axios.create({ baseURL: 'https://devstagram-app.herokuapp.com/' }); //creating an axios instance with baseurl
 //this will help our auth middleware - it will add something to each and every request...this is a function that will happen on each and every request
 //we are doing this because we need to send the token to the backend where we need to access it
-
+//http://localhost:5000
 API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')) {  //if it exists then we need to send the token
         //we need to send our token but it should start with "Bearer" and then after space it is the actual token
