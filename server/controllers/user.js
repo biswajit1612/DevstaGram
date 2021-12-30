@@ -4,6 +4,7 @@ import User from "../models/user.js";
 
 export const signin = async (req, res) => {
     const { email, password } = req.body; //it is a post request
+    console.log("clicked");
     try {
         const existingUser = await User.findOne({ email }); //we will find the existing user
         if(!existingUser) res.status(404).json({ message: "User doesn't exist"});
