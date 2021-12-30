@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API = axios.create({ baseURL: 'http://localhost:5000' }); //creating an axios instance with baseurl
+const API = axios.create({ baseURL: 'https://devstagram-app.herokuapp.com' }); //creating an axios instance with baseurl
 //this will help our auth middleware - it will add something to each and every request...this is a function that will happen on each and every request
 //we are doing this because we need to send the token to the backend where we need to access it
 //http://localhost:5000
