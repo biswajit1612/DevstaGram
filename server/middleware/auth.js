@@ -1,5 +1,5 @@
-import jwt, { decode } from 'jsonwebtoken';
-
+import jwt from 'jsonwebtoken';
+import decode from 'jwt-decode';
 const auth = async (req, res, next) => {
     //here before a user performs a action we will check whether the user is owner or not
     try {
