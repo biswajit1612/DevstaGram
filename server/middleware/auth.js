@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
             req.userId = decodeData?.id;
         } else {
             //for google auth token
-            decodeData = jwt.decode(token); //here we need to pass only token
+            decodeData = decode(token); //here we need to pass only token
             req.userId = decodeData?.id;
         }
         next();
