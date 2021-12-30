@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import decode from 'jwt-decode';
+
 const auth = async (req, res, next) => {
     //here before a user performs a action we will check whether the user is owner or not
     try {
@@ -13,8 +13,8 @@ const auth = async (req, res, next) => {
             req.userId = decodeData?.id;
         } else {
             //for google auth token
-            decodeData = decode(token); //here we need to pass only token
-            req.userId = decodeData?.id;
+            decodeData = jwt.decode(token); //here we need to pass only token
+            req.userId = decodeData?.sub;
         }
         next();
     } catch (error) {
