@@ -1,24 +1,56 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, START_LOADING, END_LOADING, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
 import * as api from '../api';  //it will import everything from api
 
 
 //action creator
-
-//due to redux thunk we can make a function which returns another function which has dispatch passed as a parameter 
-export const getPosts = () => async(dispatch) => {
+export const getPost = (id) => async(dispatch) => {
     try {
+        //before fetching all posts we should start loading so that the user knows we are fetching posts
+        dispatch({ type : START_LOADING });
         //when we fetch we get a response object which contains data we have destructured it
-        const { data } = await api.fetchPosts();  //we are fetching the posts 
+        const { data } = await api.fetchPost(id);  //we are fetching the posts 
+        // console.log(data);
+        dispatch({ type: FETCH_POST, payload: data });  //this will now trigger our reducer
+        
+    } catch (error) {
+        console.log(error.response.data.message);
+    }
+}
+//due to redux thunk we can make a function which returns another function which has dispatch passed as a parameter 
+export const getPosts = (page) => async(dispatch) => {
+    try {
+        //before fetching all posts we should start loading so that the user knows we are fetching posts
+        dispatch({ type : START_LOADING });
+        //when we fetch we get a response object which contains data we have destructured it
+        const { data } = await api.fetchPosts(page);  //we are fetching the posts 
+        // console.log(data);
         dispatch({ type: FETCH_ALL, payload: data });  //this will now trigger our reducer
+        //after fetching all our posts now we will end loading
+        dispatch({ type : END_LOADING });
+    } catch (error) {
+        console.log(error.response.data.message);
+    }
+}
+
+export const getPostsBySearch = (searchQuery) => async(dispatch) => {
+    try {
+        dispatch({ type : START_LOADING });
+        //response.data.data
+        const { data : { data } } = await api.fetchPostsBySearch(searchQuery);
+        dispatch({ type: FETCH_BY_SEARCH, payload: data });
+        //console.log(data);
+        dispatch({ type : END_LOADING });
     } catch (error) {
         console.log(error);
     }
 }
 
-export const createPost = (post) => async(dispatch) => {
+export const createPost = (post, navigate) => async(dispatch) => {
     try {
+        dispatch({ type : START_LOADING });
         const { data } = await api.createPost(post);  //axios is promised based http function in async await after fetching/posting it returns a response in which response.data contains our data
         dispatch({type: CREATE, payload: data});
+        navigate(`/posts/${data._id}`);
     } catch (error) {
         console.log(error);
     }

@@ -2,13 +2,45 @@ import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
 export const getPosts = async (req,res) => {
+    const { page } = req.query;
    try{
-       const postMessages = await PostMessage.find();
-       res.status(200).json(postMessages); //ok...returning a response in which response.data will have our data
+       const LIMIT = 3; //no of posts you want to see in 1 page
+       const startIndex = (Number(page) - 1) * LIMIT; ///get the start index of every page ...also convert page to number because from req.query we get strings
+       const total = await PostMessage.countDocuments({});  //total posts divided by limit will give total no of pages
+       //sort - it will sort from newest to oldest
+       //limit - it will limit thw posts to 6
+       //skip - it will skip the posts till the startIndex
+       const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+       res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages : Math.ceil(total / LIMIT) }); //ok...returning a response in which response.data will have our data
    }
    catch (error){
        res.status(404).json({message: error.message}); 
    }
+}
+
+//Query -> /posts?page=1  -> page=1
+//Params -> /posts/:id -> /posts/123 -> id=123
+
+export const getPostsBySearch = async (req, res) => {
+    const { searchQuery, tags } = req.query;
+    try {
+        const title = new RegExp(searchQuery, 'i');   //Test test TEST -> test all are same ...i is for ignore case
+        //$or means find me either title or tags and $in means is one of the tags in array equal to our tags that are in database
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
+        res.json({ data: posts });
+    } catch (error) {
+        res.status(404).json({message: error.message}); 
+    }
+}
+
+export const getPost = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const post = await PostMessage.findById(id);
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
 }
 
 export const createPost = async (req,res) => {

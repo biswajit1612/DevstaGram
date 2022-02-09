@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
         if(token && isCustomAuth){
             //for own token
             decodeData = jwt.verify(token, 'Devstagram');  //this will give us the result which we passed while making token and salt is also passed
+           //yeh id jwt sign krte wakt dala tha token mei
             req.userId = decodeData?.id;
         } else {
             //for google auth token

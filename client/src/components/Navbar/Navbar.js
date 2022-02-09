@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 
 import useStyles from './styles';
-import devstagram from '../../images/devstagram.png';
-
+import devstagramLogo from '../../images/Devstagram-Logo.png';
+import devstagramText from '../../images/DevstagramText.png';
 const Navbar = () => {
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -36,10 +36,10 @@ const Navbar = () => {
     }, [location]);
     return(
         <AppBar className={classes.appBar} position="static" color="inherit">
-            <div className={classes.brandContainer}>
-                <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">DevstaGram</Typography>
-                <img className={classes.image} src={devstagram} alt="devstagram" height="60" width="50"></img>
-            </div>
+            <Link to="/" className={classes.brandContainer}>
+                <img src={devstagramText} alt="icon" height="40px"/>
+                <img className={classes.image} src={devstagramLogo} alt="devstagram" height="40px" />
+            </Link>
             <Toolbar className={classes.toolbar}>
                 {user ? (
                     <div className={classes.profile}>

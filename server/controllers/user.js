@@ -14,7 +14,7 @@ export const signin = async (req, res) => {
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'Devstagram' ,{ expiresIn: "1h" }); //jwt is used to send information in form of token to browser along with secret code
 
-        res.status(200).json({ result: existingUser, token });
+        res.status(200).json({ result: existingUser, token });  //we are attaching this in response.data ...{data: result:...,token:....}
     } catch (error) {
         res.status(500).json({ message: "Something went wrong "});
     }

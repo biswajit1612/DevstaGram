@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from 'react-file-base64';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import useStyles from './styles';
 import { createPost, updatePost } from "../../actions/posts";
 
@@ -10,9 +11,10 @@ const Form = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
         title: '', message: '', tags: '', selectedFile: ''
     });
-    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null); //if there is a currentid then it wiil loop over state.posts and find the post which is equal to currentid and will return that to fill the post or else it will return null
+    const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId) : null); //if there is a currentid then it wiil loop over state.posts and find the post which is equal to currentid and will return that to fill the post or else it will return null
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));  //to get anything stored in local storage we need to parse it
 
     useEffect(() => {
@@ -30,7 +32,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if(currentId) { 
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
         } else{
-            dispatch(createPost({ ...postData, name: user?.result?.name }));
+            dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
         }
         clear();
     }
@@ -46,7 +48,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }
     //postdata holds the data(state) while setpostdata is a setter function...while onchange event when we set data first spread all data then update the required one or else it will only add the updated one and rest other field will be missing
     return (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{currentId ? 'Editing' : 'Creating'} a DevPost</Typography> 
                 <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({...postData, title:e.target.value})}/>
