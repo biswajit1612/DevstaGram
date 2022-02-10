@@ -46,4 +46,19 @@ export default makeStyles((theme) => ({
   loadingPaper: {
     display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '15px', height: '39vh',
   },
+  commentsOuterContainer: {
+    display: 'flex', justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column-reverse',
+    },
+  },
+  commentsInnerContainer: {
+    height: '200px', overflowY: 'auto', marginRight: '30px',
+  },
+  commentBox: {
+    width: '70%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  }
 }));
